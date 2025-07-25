@@ -52,11 +52,17 @@ def download_and_save_data(api, scrip, exch, strike_price, right, expiry_date, s
         expiry_month = expiry_date_obj.strftime("%B")
         expiry_year = expiry_date_obj.strftime("%Y")
 
-        dir_name = f"{export_path}/{scrip}/{expiry_year}/{expiry_month}/{expiry_date.split('T')[0]}_expiry"
+        dir_name = os.path.join(
+            export_path,
+            scrip,
+            expiry_year,
+            expiry_month,
+            f"{expiry_date.split('T')[0]}_expiry",
+        )
         os.makedirs(dir_name, exist_ok=True)
 
         option_type = "CE" if right == "call" else "PE"
-        file_name = f"{dir_name}/{strike_price}_{option_type}.csv"
+        file_name = os.path.join(dir_name, f"{strike_price}_{option_type}.csv")
 
         with open(file_name, 'w') as file:
             for row in full_data:
